@@ -73,15 +73,15 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private class HttpRequestTask extends AsyncTask<Void, Void, Greeting> {
+    private class HttpRequestTask extends AsyncTask<Void, Void, CarrierWrapper> {
         @Override
-        protected Greeting doInBackground(Void... params) {
+        protected CarrierWrapper doInBackground(Void... params) {
             try {
-                final String url = "http://rest-service.guides.spring.io/greeting";
+                final String url = "http://164.132.58.173:8081/BusScheduleService/carrier/AB-BUS";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                Greeting greeting = restTemplate.getForObject(url, Greeting.class);
-                return greeting;
+                CarrierWrapper carrierWrapper = restTemplate.getForObject(url, CarrierWrapper.class);
+                return carrierWrapper;
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
             }
@@ -90,11 +90,11 @@ public class MainActivity extends ActionBarActivity {
         }
 
         @Override
-        protected void onPostExecute(Greeting greeting) {
+        protected void onPostExecute(CarrierWrapper carrierWrapper) {
             TextView greetingIdText = (TextView) findViewById(R.id.id_value);
             TextView greetingContentText = (TextView) findViewById(R.id.content_value);
-            greetingIdText.setText(greeting.getId());
-            greetingContentText.setText(greeting.getContent());
+            greetingIdText.setText(carrierWrapper.getName());
+            greetingContentText.setText(carrierWrapper.getTelephoneNumber());
         }
 
     }
